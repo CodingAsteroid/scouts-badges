@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scout Badge Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Scout Badge Tracker</h1>
+        <div class="selector">
+            <label for="section">I am a...</label>
+            <select id="section">
+                <option value="">Select Section</option>
+                <option value="squirrels">Squirrel</option>
+                <option value="beavers">Beaver</option>
+                <option value="cubs">Cub</option>
+                <option value="scouts">Scout</option>
+                <option value="explorers">Explorer</option>
+                <option value="network">Network Member</option>
+            </select>
+        </div>
+        
+        <div id="badgeContainer" class="hidden">
+            <h2 id="badgeTitle"></h2>
+            <ul id="badgeList"></ul>
+            <button onclick="exportCSV()">Export as CSV</button>
+            <input type="file" id="importCSV" accept=".csv" onchange="importCSV(event)">
+            <label for="importCSV" class="import-btn">Import CSV</label>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
