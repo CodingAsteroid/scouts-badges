@@ -8,46 +8,64 @@ const badges = {
 };
 
 const sectionSelect = document.getElementById("section");
-const badgeContainer = document.getElementById("badgeContainer");
+const homeScreen = document.getElementById("homeScreen");
+const badgeScreen = document.getElementById("badgeScreen");
 const badgeTitle = document.getElementById("badgeTitle");
-const badgeList = document.getElementById("badgeList");
+const badgeContainer = document.getElementById("badgeContainer");
 
-sectionSelect.addEventListener("change", function () {
+sectionSelect.addEventListener("change", function() {
   const section = this.value;
   if (section) {
-    // Set up the badge list content
+    // Set the badge screen title
     badgeTitle.innerText = `Badges for ${this.options[this.selectedIndex].text}`;
-    badgeList.innerHTML = "";
+    
+    // Build the badge boxes
+    badgeContainer.innerHTML = ""; // Clear previous boxes
     badges[section].forEach(badge => {
-      const li = document.createElement("li");
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.id = badge;
-      checkbox.checked = localStorage.getItem(badge) === "true";
-      checkbox.addEventListener("change", () => {
-        localStorage.setItem(badge, checkbox.checked);
+      const badgeBox = document.createElement("div");
+      badgeBox.className = "badge-box";
+      badgeBox.dataset.badge = badge;
+      
+      // Load saved state from localStorage
+      if (localStorage.getItem(badge) === "true") {
+        badgeBox.classList.add("completed");
+      }
+      
+      // Placeholder image (replace later if needed)
+      const img = document.createElement("img");
+      img.src = "https://via.placeholder.com/100";
+      img.alt = badge;
+      
+      const span = document.createElement("span");
+      span.className = "badge-name";
+      span.innerText = badge;
+      
+      badgeBox.appendChild(img);
+      badgeBox.appendChild(span);
+      
+      // Toggle the "completed" state on click
+      badgeBox.addEventListener("click", function() {
+        this.classList.toggle("completed");
+        const isCompleted = this.classList.contains("completed");
+        localStorage.setItem(badge, isCompleted);
       });
-      const label = document.createElement("label");
-      label.htmlFor = badge;
-      label.innerText = badge;
-      li.appendChild(checkbox);
-      li.appendChild(label);
-      badgeList.appendChild(li);
+      
+      badgeContainer.appendChild(badgeBox);
     });
     
-    // Activate the container with a slight delay to trigger the CSS transition
-    setTimeout(() => badgeContainer.classList.add("active"), 10);
-  } else {
-    // Remove the active class to hide the container
-    badgeContainer.classList.remove("active");
+    // Slide transitions:
+    // Move the home screen to the left and bring in the badge screen.
+    homeScreen.style.transform = "translateX(-100%)";
+    badgeScreen.style.transform = "translateX(0)";
   }
 });
 
 function exportCSV() {
   let csvContent = "data:text/csv;charset=utf-8,Badge,Completed\n";
-  document.querySelectorAll("#badgeList li").forEach(li => {
-    const checkbox = li.querySelector("input");
-    csvContent += `${checkbox.id},${checkbox.checked}\n`;
+  document.querySelectorAll(".badge-box").forEach(box => {
+    const badge = box.dataset.badge;
+    const completed = box.classList.contains("completed");
+    csvContent += `${badge},${completed}\n`;
   });
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
@@ -61,18 +79,23 @@ function exportCSV() {
 function importCSV(event) {
   const file = event.target.files[0];
   if (!file) return;
-
   const reader = new FileReader();
-  reader.onload = function (e) {
+  reader.onload = function(e) {
     const rows = e.target.result.split("\n").slice(1);
     rows.forEach(row => {
       const [badge, completed] = row.split(",");
-      if (badge && completed.trim() === "true") {
-        localStorage.setItem(badge, "true");
+      if (badge) {
+        if (completed.trim() === "true") {
+          localStorage.setItem(badge, "true");
+        } else {
+          localStorage.removeItem(badge);
+        }
       }
     });
-    // Refresh the badge list to show updated progress
-    sectionSelect.dispatchEvent(new Event("change"));
+    // Refresh badge screen if visible
+    if (sectionSelect.value) {
+      sectionSelect.dispatchEvent(new Event("change"));
+    }
   };
   reader.readAsText(file);
 }

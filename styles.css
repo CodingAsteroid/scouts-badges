@@ -1,58 +1,97 @@
+/* Global Styles */
 body {
   font-family: Arial, sans-serif;
   text-align: center;
   background: linear-gradient(135deg, #4B0082, #008080);
   color: white;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
   margin: 0;
+  overflow: hidden; /* Prevent scrollbars during transitions */
 }
 
-.container {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-  width: 80%;
-  max-width: 500px;
+.screens {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
 }
 
-h1 {
-  margin-bottom: 20px;
+/* Screen Styles */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-.selector,
-#badgeContainer {
-  margin-top: 20px;
+/* Home screen starts centered */
+#homeScreen {
+  transform: translateX(0);
+  z-index: 2;
 }
 
-select {
+/* Badge screen starts offscreen to the right */
+#badgeScreen {
+  transform: translateX(100%);
+  z-index: 1;
+}
+
+/* Dropdown styling */
+.selector select {
   padding: 10px;
   font-size: 16px;
   border-radius: 5px;
   border: none;
 }
 
-/* Initially hide the badge container with opacity and slight upward offset */
-#badgeContainer {
-  opacity: 0;
-  transform: translateY(-20px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
+/* Badge Container */
+.badge-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px;
 }
 
-/* When active, fade and slide it into view */
-#badgeContainer.active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
+/* Each Badge Box */
+.badge-box {
+  width: 120px;
+  height: 150px;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  transition: border 0.3s, background 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-button,
-.import-btn {
+.badge-box img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.badge-box .badge-name {
+  font-size: 14px;
+}
+
+/* Highlight for completed badges */
+.badge-box.completed {
+  background: rgba(0, 128, 128, 0.6);
+  border-color: gold;
+}
+
+/* Buttons and Import label styling */
+button, .import-btn {
   margin-top: 10px;
   padding: 10px 15px;
   font-size: 16px;
@@ -64,8 +103,7 @@ button,
   transition: background 0.3s;
 }
 
-button:hover,
-.import-btn:hover {
+button:hover, .import-btn:hover {
   background-color: darkcyan;
 }
 
