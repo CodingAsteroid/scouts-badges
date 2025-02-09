@@ -27,8 +27,16 @@
 
     <!-- Badge Checklist Screen -->
     <div id="badgeScreen" class="screen">
+      <button id="backBtn">Back</button>
       <h2 id="badgeTitle"></h2>
-      <div id="badgeContainer" class="badge-container"></div>
+      <div class="badge-row">
+        <h3>Activity Badges</h3>
+        <div id="activityBadgeContainer" class="badge-container"></div>
+      </div>
+      <div class="badge-row">
+        <h3>Staged Badges</h3>
+        <div id="stagedBadgeContainer" class="badge-container"></div>
+      </div>
       <button onclick="exportCSV()">Export as CSV</button>
       <input type="file" id="importCSV" accept=".csv" onchange="importCSV(event)" />
       <label for="importCSV" class="import-btn">Import CSV</label>
