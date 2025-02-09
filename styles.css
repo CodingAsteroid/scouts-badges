@@ -126,7 +126,7 @@ button:hover, .import-btn:hover {
 /* Staged Badge Submenu styling */
 .staged-submenu {
   position: absolute;
-  bottom: -40px;
+  bottom: -45px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0, 0, 0, 0.8);
@@ -145,6 +145,12 @@ button:hover, .import-btn:hover {
   padding: 5px 8px;
   border-radius: 3px;
   cursor: pointer;
+}
+
+/* Highlight selected stage buttons */
+.staged-submenu button.selected {
+  background-color: gold;
+  color: black;
 }
 
 .badge-box.show-submenu .staged-submenu {

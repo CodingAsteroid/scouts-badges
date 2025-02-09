@@ -1,4 +1,5 @@
 // Data structure with separate arrays for activity and staged badges.
+// For demonstration, "cubs" now includes a staged badge for "Air Activities".
 const badgeData = {
   squirrels: {
     activity: ["Adventure Badge", "Exploration Badge", "Friendship Badge"],
@@ -11,7 +12,7 @@ const badgeData = {
   cubs: {
     activity: ["Athlete Badge", "Hiking Badge", "Teamwork Badge"],
     staged: [
-      { name: "Air Activities", stages: 6 }
+      { name: "Air Activities", stages: 6 } // staged badge example
     ]
   },
   scouts: {
@@ -129,11 +130,23 @@ function createStagedBadgeBox(badgeObj) {
   for (let i = 1; i <= maxStages; i++) {
     const btn = document.createElement("button");
     btn.innerText = i;
+    // Highlight buttons up to the current stage.
+    if (i <= currentStage) {
+      btn.classList.add("selected");
+    }
     btn.addEventListener("click", function(e) {
       e.stopPropagation(); // Prevent toggling the submenu again.
-      // Save the selected stage (and by implication, stages 1 to i are completed).
+      // Save the selected stage.
       localStorage.setItem(badge, i);
       span.innerText = badge + ` (Stage ${i})`;
+      // Update submenu button highlights.
+      Array.from(submenu.children).forEach((child, index) => {
+        if (index < i) {
+          child.classList.add("selected");
+        } else {
+          child.classList.remove("selected");
+        }
+      });
       box.classList.remove("show-submenu");
     });
     submenu.appendChild(btn);
